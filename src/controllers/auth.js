@@ -1,5 +1,6 @@
 import { ONE_MONTH } from '../constants/index.js';
 import {
+  getUserBySessionId,
   loginUser,
   loginWithGoogle,
   logoutUser,
@@ -14,9 +15,7 @@ export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
 
   res.status(201).json({
-    status: 201,
-    message: 'Successfully registered a user!',
-    data: user,
+    user,
   });
 };
 
@@ -33,12 +32,14 @@ export const loginUserController = async (req, res) => {
     expires: session.refreshTokenValidUntil,
   });
 
+  const user = await getUserBySessionId(session.userId);
+
   res.json({
-    status: 200,
-    message: 'Successfully logged in an user!',
-    data: {
-      accessToken: session.accessToken,
+    user: {
+      name: user.name,
+      email: user.email,
     },
+    accessToken: session.accessToken,
   });
 };
 
@@ -73,12 +74,14 @@ export const refreshUserSessionController = async (req, res) => {
 
   setupSession(res, session);
 
+  const user = await getUserBySessionId(session.userId);
+
   res.json({
-    status: 200,
-    message: 'Successfully refreshed a session!',
-    data: {
-      accessToken: session.accessToken,
+    user: {
+      name: user.name,
+      email: user.email,
     },
+    accessToken: session.accessToken,
   });
 };
 

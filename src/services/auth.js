@@ -25,6 +25,9 @@ export const registerUser = async (payload) => {
   });
 };
 
+export const getUserBySessionId = (sessionId) =>
+  UsersCollection.findById(sessionId);
+
 export const loginUser = async (payload) => {
   const user = await UsersCollection.findOne({ email: payload.email });
 
@@ -48,9 +51,8 @@ export const loginUser = async (payload) => {
   });
 };
 
-export const logoutUser = async (sessionId) => {
-  await SessionsCollection.deleteOne({ _id: sessionId });
-};
+export const logoutUser = (sessionId) =>
+  SessionsCollection.deleteOne({ _id: sessionId });
 
 const createSession = () => {
   const accessToken = randomBytes(30).toString('base64');

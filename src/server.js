@@ -14,7 +14,16 @@ const PORT = Number(getEnvVar('PORT', '3000'));
 export const setupServer = () => {
   const app = express();
 
-  app.use(cors());
+  app.use(
+    cors({
+      origin: [
+        'http://localhost:5175',
+        'https://phonebook-frontend-p4qy.onrender.com',
+      ],
+      credentials: true,
+    }),
+  );
+
   app.use(express.json());
   app.use(cookieParser());
   app.use('/uploads', express.static(path.resolve('src', 'uploads')));
