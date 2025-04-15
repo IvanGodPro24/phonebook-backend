@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino-http';
 import path from 'node:path';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
@@ -28,14 +27,6 @@ export const setupServer = () => {
   app.use(cookieParser());
   app.use('/uploads', express.static(path.resolve('src', 'uploads')));
   app.use('/api-docs', swaggerDocs());
-
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-      },
-    }),
-  );
 
   app.use(router);
 
