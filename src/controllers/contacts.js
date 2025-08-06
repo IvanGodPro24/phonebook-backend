@@ -41,12 +41,18 @@ export const getContactByIdController = async (req, res) => {
 };
 
 export const createContactController = async (req, res) => {
+  let photoUrl = null;
+
+  if (req.file) {
+    photoUrl =
+      getEnvVar('ENABLE_CLOUDINARY') === 'true'
+        ? await saveFileToCloudinary(req.file)
+        : await saveFileToUploadDir(req.file);
+  }
+
   const contact = await createContact({
     userId: req.user._id,
-    // photo:
-    //   getEnvVar('ENABLE_CLOUDINARY') === 'true'
-    //     ? await saveFileToCloudinary(req.file)
-    //     : await saveFileToUploadDir(req.file),
+    photo: photoUrl,
     ...req.body,
   });
 

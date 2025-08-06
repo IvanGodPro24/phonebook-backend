@@ -16,7 +16,7 @@ export const setupServer = () => {
   app.use(
     cors({
       origin: [
-        'http://localhost:5175',
+        'http://localhost:5173',
         'https://phonebook-frontend-p4qy.onrender.com',
       ],
       credentials: true,

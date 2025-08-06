@@ -10,6 +10,8 @@ cloudinary.config({
 });
 
 export const saveFileToCloudinary = async (file) => {
+  if (!file || !file.path) throw new Error('No file provided to upload.');
+
   const response = await cloudinary.uploader.upload(file.path);
 
   await fs.unlink(file.path);
