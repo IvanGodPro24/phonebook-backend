@@ -74,6 +74,10 @@ const handleContactUpdate = async (req, res, next, upsert = false) => {
 
   const payload = { ...req.body };
 
+  if (payload.email === '') {
+    payload.email = null;
+  }
+
   if (req.file) {
     payload.photo =
       getEnvVar('ENABLE_CLOUDINARY') === 'true'
