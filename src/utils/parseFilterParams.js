@@ -1,3 +1,12 @@
+const parseString = (str) => {
+  if (typeof str !== 'string') return;
+
+  const trimmedStr = str.trim();
+  if (trimmedStr.length === 0) return;
+
+  return trimmedStr;
+};
+
 const parseContactType = (type) => {
   const isString = typeof type === 'string';
 
@@ -21,12 +30,18 @@ const parseIsFavourite = (isFavourite) => {
 };
 
 export const parseFilterParams = (query) => {
-  const { contactType, isFavourite } = query;
+  const { name, email, phoneNumber, contactType, isFavourite } = query;
 
+  const parsedName = parseString(name);
+  const parsedEmail = parseString(email);
+  const parsedPhoneNumber = parseString(phoneNumber);
   const parsedContactType = parseContactType(contactType);
   const parsedIsFavourite = parseIsFavourite(isFavourite);
 
   return {
+    name: parsedName,
+    email: parsedEmail,
+    phoneNumber: parsedPhoneNumber,
     contactType: parsedContactType,
     isFavourite: parsedIsFavourite,
   };
