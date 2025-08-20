@@ -1,3 +1,4 @@
+import createHttpError from 'http-errors';
 import { ContactsCollection } from '../db/models/contact.js';
 import { calculatePagination } from '../utils/calculatePagination.js';
 
@@ -56,7 +57,26 @@ export const getAllContacts = async ({
 export const getContactById = (contactId, userId) =>
   ContactsCollection.findOne({ _id: contactId, userId });
 
-export const createContact = (payload) => ContactsCollection.create(payload);
+export const createContact = async (payload) => {
+  const { userId, name, email, phoneNumber } = payload;
+
+  const duplicate = await ContactsCollection.findOne({
+    userId,
+    $or: [
+      { name: name.trim().toLowerCase() },
+      { phoneNumber: phoneNumber.trim() },
+      ...(email ? [{ email: email.trim() }] : []),
+    ],
+  });
+
+  if (duplicate)
+    throw createHttpError(
+      400,
+      'Contact with the same name, phone number, or email already exists',
+    );
+
+  return ContactsCollection.create(payload);
+};
 
 export const deleteContact = (contactId, userId) =>
   ContactsCollection.findOneAndDelete({
@@ -70,6 +90,24 @@ export const updateContact = async (
   payload,
   options = {},
 ) => {
+  const { name, phoneNumber, email } = payload;
+
+  const duplicate = await ContactsCollection.findOne({
+    userId,
+    _id: { $ne: contactId },
+    $or: [
+      { name: name.trim().toLowerCase() },
+      { phoneNumber: phoneNumber.trim() },
+      ...(email ? [{ email: email.trim() }] : []),
+    ],
+  });
+
+  if (duplicate)
+    throw createHttpError(
+      400,
+      'Another contact with the same name, phone number, or email already exists',
+    );
+
   const result = await ContactsCollection.findOneAndUpdate(
     { _id: contactId, userId },
     payload,
