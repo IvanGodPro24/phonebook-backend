@@ -114,6 +114,7 @@ export const requestResetPassword = async (email) => {
       template({
         name: user.name,
         link: `${getEnvVar('APP_DOMAIN')}/reset-password?token=${resetToken}`,
+        year: new Date().getFullYear(),
       }),
     );
   } catch (error) {
