@@ -25,15 +25,16 @@ Built with **Node.js**, **Express**, and **MongoDB**.
 
 1. Clone the repository:
 
-````bash
+```bash
 git clone https://github.com/IvanGodPro24/phonebook-backend.git
 cd phonebook-backend
-
+```
 
 2. Install dependencies:
 
 ```bash
 npm install
+```
 
 3. Create a .env file in the project root and add the required environment variables listed in .env.example
 
@@ -41,7 +42,7 @@ npm install
 
 ```bash
 npm run dev
-````
+```
 
 ## 🌐 API Endpoints
 
