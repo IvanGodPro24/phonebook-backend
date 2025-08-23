@@ -12,24 +12,14 @@ responses:
         schema:
           type: object
           required:
-            - status
-            - message
-            - data
+            - user
+            - accessToken
           properties:
-            status:
-              type: integer
-              example: 200
-            message:
+            user:
+              $ref: ../../components/schemas/user.yaml
+            accessToken:
               type: string
-              example: Successfully refreshed a session!
-            data:
-              type: object
-              required:
-                - accessToken
-              properties:
-                accessToken:
-                  type: string
-                  example: 'pZUUMQQ4p/hX1p/3XXUGQMzGxM8Xtznz2a01bObl'
+              example: 'pZUUMQQ4p/hX1p/3XXUGQMzGxM8Xtznz2a01bObl'
   '401':
     $ref: '../../components/responses/401.yaml'
   '500':
